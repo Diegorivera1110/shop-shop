@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Switch } from 'react-router-dom';
 import {
   ApolloClient,
   InMemoryCache,
@@ -14,6 +14,7 @@ import NoMatch from './pages/NoMatch';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Nav from './components/Nav';
+import { StoreProvider } from './utils/GlobalState';
 import OrderHistory from './pages/OrderHistory';
 
 const httpLink = createHttpLink({
@@ -40,6 +41,7 @@ function App() {
     <ApolloProvider client={client}>
       <Router>
         <div>
+          <StoreProvider>
           <Nav />
           <Switch>
             <Route exact path="/" component={Home} />
@@ -49,6 +51,7 @@ function App() {
             <Route exact path="/products/:id" component={Detail} />
             <Route component={NoMatch} />
           </Switch>
+          </StoreProvider>
         </div>
       </Router>
     </ApolloProvider>
