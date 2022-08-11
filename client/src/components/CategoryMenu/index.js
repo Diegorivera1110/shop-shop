@@ -1,20 +1,28 @@
 import React, { useEffect } from 'react';
-import { UPDATE_CATEGORIES, UPDATE_CUURENT_CATEGORY } from '../../utils/actions';
+import { UPDATE_CATEGORIES, UPDATE_CURRENT_CATEGORY } from '../../utils/actions';
 import { useQuery } from '@apollo/client';
 import { QUERY_CATEGORIES } from '../../utils/queries';
 import { useStoreContext } from "../../utils/GlobalState";
 
 function CategoryMenu({ setCategory }) {
   const { data: categoryData } = useQuery(QUERY_CATEGORIES);
-  const categories = categoryData?.categories || [];
+  // const categories = categoryData?.categories || [];
 
   const [state, dispatch] = useStoreContext();
 
   const { categories } = state;
   
-  const { data: categoryData } = useQuery(QUERY_CATEGORIES);
+  // const { data: categoryData } = useQuery(QUERY_CATEGORIES);
   
   useEffect(() => {
+
+    const handleClick = id => {
+      dispatch({
+        type: UPDATE_CUURENT_CATEGORY,
+        currentCategory: id
+      });
+    };
+
     // if categoryData exists or has changed from the response of useQuery, then run dispatch();
     if (categoryData) {
       // execute our dispatch function with our action object indicating the type of action and the data to set our state for categories to
@@ -28,11 +36,11 @@ function CategoryMenu({ setCategory }) {
   return (
     <div>
       <h2>Choose a Category:</h2>
-      {categories.map((item) => (
+      {categories.map(item => (
         <button
           key={item._id}
           onClick={() => {
-            setCategory(item._id);
+            handleClick(item._id);
           }}
         >
           {item.name}
